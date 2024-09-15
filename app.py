@@ -27,14 +27,17 @@ def extract_services_and_versions(text):
 def run_searchSploit(service):
     try:
         if "HTML" in service:
-            return True
-        else:
-            command = ['searchsploit', service]    
-            # Run the command and capture the output
-            result = subprocess.run(command, capture_output=True, text=True, check=True)
-            if result.stdout=='Exploits: No Results\nShellcodes: No Results\n':
-                return
-            print(result)
+            return
+        command = ['searchsploit', service]
+        # Run the command and capture the output
+        result = subprocess.run(command, capture_output=True, text=True, check=True)
+        if 'Exploits: No Results' in result.stdout:
+            print(f"No exploits found for {service}")
+            return
+        print(f"SearchSploit Output for {service}:")
+        print(result.stdout)
+    except subprocess.CalledProcessError as e:
+        print(f"An error occurred with searchsploit: {e}")
     except Exception as e:
         print(f"An unexpected error occurred: {e}")
             
