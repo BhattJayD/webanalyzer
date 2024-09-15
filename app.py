@@ -24,6 +24,21 @@ def extract_services_and_versions(text):
     
     return services
 
+def run_searchSploit(service):
+    try:
+        if "HTML" in service:
+            return True
+        else:
+            command = ['searchsploit', service]    
+            # Run the command and capture the output
+            result = subprocess.run(command, capture_output=True, text=True, check=True)
+            if result.stdout=='Exploits: No Results\nShellcodes: No Results\n':
+                return
+            print(result)
+    except Exception as e:
+        print(f"An unexpected error occurred: {e}")
+            
+
 def run_whatweb(url):
     try:
         # Construct the command
@@ -47,6 +62,9 @@ def run_whatweb(url):
         print("Extracted Services and Versions:")
         res=list(set([""+x.replace('[',' ').replace(']','') for x in services]))
         print(res)
+        
+        for i in res:
+            run_searchSploit(i)
         
     except subprocess.CalledProcessError as e:
         print(f"An error occurred: {e}")
