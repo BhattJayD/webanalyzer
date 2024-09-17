@@ -5,7 +5,10 @@ const App = () => {
   return (
     <div className="chat-container">
       <div className="input-box">
-        <input type="text" placeholder="What can I help with?" />
+        <input
+          type="text"
+          placeholder="Search for vulnerability on your site"
+        />
         <button className="send-btn">&#9654;</button>
       </div>
     </div>
