@@ -4,11 +4,16 @@ import subprocess
 import re
 import os
 from dotenv import load_dotenv
+from flask_cors import CORS
 
 # Load environment variables from .env file
 load_dotenv()
 
 app = Flask(__name__)
+
+
+# Enable CORS for all routes
+CORS(app)
 
 # Vulners API key
 API_KEY = os.getenv('API_KEY')
