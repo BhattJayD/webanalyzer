@@ -1,8 +1,65 @@
 from flask import Flask, request, jsonify
+import requests
 import subprocess
 import re
+import os
+from dotenv import load_dotenv
+
+# Load environment variables from .env file
+load_dotenv()
 
 app = Flask(__name__)
+
+# Vulners API key
+API_KEY = os.getenv('API_KEY')
+
+
+# Function to log messages and accumulate logs
+def log(message, logs):
+    print(message)
+    logs.append(message)
+
+def get_server_info(url, logs):
+    log(f'Performing curl -I for {url}...', logs)
+    try:
+        result = subprocess.run(['curl', '-I', url], capture_output=True, text=True, check=True)
+        headers = result.stdout
+        log('Received headers:', logs)
+        log(headers, logs)
+        server_line = next((line for line in headers.splitlines() if line.lower().startswith('server:')), None)
+        if server_line:
+            server_info = server_line.split(':', 1)[1].strip()
+            log(f'Server information: {server_info}', logs)
+            return server_info
+        else:
+            log('No server information found.', logs)
+            return None
+    except subprocess.CalledProcessError as e:
+        log(f'Failed to run curl: {e}', logs)
+        return None
+    except Exception as e:
+        log(f'Exception occurred while getting server info: {e}', logs)
+        return None
+
+def search_vulnerabilities(server_info, logs):
+    log(f'Searching for vulnerabilities related to {server_info}...', logs)
+    try:
+        query = server_info
+        url = f'https://vulners.com/api/v3/search/lucene/?query={query}'
+        response = requests.get(url, headers={'Authorization': f'Bearer {API_KEY}'})
+        
+        if response.status_code == 200:
+            log('Request to Vulners API successful.', logs)
+            data = response.json()
+            log('Data retrieved from API:', logs)
+            log(str(data), logs)  # Logging the raw response data
+            return data
+        else:
+            log(f'Error: {response.status_code} - {response.text}', logs)
+            return {'error': f'Error: {response.status_code} - {response.text}'}
+    except Exception as e:
+        log(f'Exception occurred while searching vulnerabilities: {e}', logs)
+        return {'error': str(e)}
 
 def extract_services_and_versions(text):
     # Revised regex pattern to accurately capture service names and versions
@@ -109,7 +166,36 @@ def run_whatweb(url):
     except Exception as e:
         return f"An unexpected error occurred: {e}"
 
+# API 1: /scanv2 (Vulners + Curl)
+@app.route('/scanv2', methods=['POST'])
+def scanv2():
+    # url = request.form.get('url')
+    data = request.json
+    url = data.get('url')
+    if not url:
+        return jsonify({'error': 'No URL provided'})
 
+    # Initialize logs for this request
+    logs = []
+
+    # Get server information from the URL
+    server_info = get_server_info(url, logs)
+    if not server_info:
+        return jsonify({'error': 'Unable to retrieve server information', 'logs': logs})
+
+    # Search for vulnerabilities based on server information
+    vulnerabilities = search_vulnerabilities(server_info, logs)
+
+    # Include logs in the response
+    response = {
+        'server_info': server_info,
+        'vulnerabilities': vulnerabilities,
+        'logs': logs
+    }
+
+    return jsonify(response)
+
+# API 2: /scan (WhatWeb + SearchSploit)
 @app.route('/scan', methods=['POST'])
 def scan():
     data = request.json
