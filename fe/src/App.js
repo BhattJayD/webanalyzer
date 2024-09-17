@@ -12,10 +12,10 @@ const App = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault(); // Prevents page reload
-    if (!url.match(urlRegex)) {
-      console.log("not valid url");
-      return;
-    }
+    // if (!url.match(urlRegex)) {
+    //   console.log("not valid url");
+    //   return;
+    // }
     console.log(url); // Logs the input value
     const r1 = await postData(url);
     const r2 = await postData2(url);
