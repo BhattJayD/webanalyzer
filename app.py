@@ -33,9 +33,10 @@ def run_searchSploit(service):
         result = subprocess.run(command, capture_output=True, text=True, check=True)
         if 'Exploits: No Results' in result.stdout:
             print(f"No exploits found for {service}")
-            return
+            return f"No exploits found for {service}"
         print(f"SearchSploit Output for {service}:")
         print(result.stdout)
+        return result.stdout
     except subprocess.CalledProcessError as e:
         print(f"An error occurred with searchsploit: {e}")
     except Exception as e:
@@ -66,8 +67,10 @@ def run_whatweb(url):
         res=list(set([""+x.replace('[',' ').replace(']','') for x in services]))
         print(res)
         
+        exploits=[]
         for i in res:
-            run_searchSploit(i)
+            exploits.append(run_searchSploit(i)) 
+        print(exploits,'exploitsss')
         
     except subprocess.CalledProcessError as e:
         print(f"An error occurred: {e}")
