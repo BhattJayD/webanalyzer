@@ -1,5 +1,8 @@
+from flask import Flask, request, jsonify
 import subprocess
 import re
+
+app = Flask(__name__)
 
 def extract_services_and_versions(text):
     # Revised regex pattern to accurately capture service names and versions
@@ -32,15 +35,12 @@ def run_searchSploit(service):
         # Run the command and capture the output
         result = subprocess.run(command, capture_output=True, text=True, check=True)
         if 'Exploits: No Results' in result.stdout:
-            print(f"No exploits found for {service}")
             return f"No exploits found for {service}"
-        print(f"SearchSploit Output for {service}:")
-        print(result.stdout)
         return result.stdout
     except subprocess.CalledProcessError as e:
-        print(f"An error occurred with searchsploit: {e}")
+        return f"An error occurred with searchsploit: {e}"
     except Exception as e:
-        print(f"An unexpected error occurred: {e}")
+        return f"An unexpected error occurred: {e}"
             
 
 def run_whatweb(url):
@@ -54,7 +54,6 @@ def run_whatweb(url):
         # Output the result
         print("WhatWeb Output:")
         res = result.stdout
-        print(res)
         
         # Clean the output to remove unwanted characters and formatting
         res_clean = re.sub(r'\x1b\[[0-9;]*m', '', res)  # Remove ANSI escape codes
@@ -69,22 +68,25 @@ def run_whatweb(url):
         
         exploits=[]
         for i in res:
-            exploits.append(run_searchSploit(i)) 
-        print(exploits,'exploitsss')
-        
+            if i:
+                exploits.append(run_searchSploit(i)) 
+        return {"services": res, "exploits": exploits}        
     except subprocess.CalledProcessError as e:
-        print(f"An error occurred: {e}")
+        return f"An error occurred: {e}"
     except FileNotFoundError:
-        print("Error: 'whatweb' command not found. Please make sure it is installed and accessible.")
+        return "Error: 'whatweb' command not found. Please make sure it is installed and accessible."
     except Exception as e:
-        print(f"An unexpected error occurred: {e}")
+        return f"An unexpected error occurred: {e}"
 
-def main():
-    # Get URL or IP address from user
-    url = input("Enter the IP address or URL: ")
-    
-    # Run WhatWeb with the provided URL
-    run_whatweb(url)
+
+@app.route('/scan', methods=['POST'])
+def scan():
+    data = request.json
+    url = data.get('url')
+    if not url:
+        return jsonify({"error": "URL is required"}), 400
+    result = run_whatweb(url)
+    return jsonify(result)
 
 if __name__ == "__main__":
-    main()
+    app.run(debug=True)
