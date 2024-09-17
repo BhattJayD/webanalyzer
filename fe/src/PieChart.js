@@ -1,6 +1,7 @@
 import React from "react";
 import { Pie } from "react-chartjs-2";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
+import "./styles/PieChart.css";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
@@ -15,7 +16,7 @@ const PieChart = ({ services }) => {
   console.log(services.length, "servicesWithoutData");
 
   const data = {
-    labels: ["Services without exploit", "Services with exploit"],
+    labels: ["Services with exploit", "Services without exploit"],
     datasets: [
       {
         data: [servicesWithData, services.length],
@@ -35,8 +36,8 @@ const PieChart = ({ services }) => {
   };
 
   return (
-    <div style={{ width: "400px", margin: "auto" }}>
-      <h3>Services Data Overview</h3>
+    <div className="body">
+      <h3>Services Overview</h3>
       <Pie data={data} options={options} />
     </div>
   );
