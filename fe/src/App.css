@@ -1,41 +1,150 @@
-/* App.css */
+/* Global Styles */
 body {
-  background-color: #121212;
-  color: white;
-  font-family: 'Arial', sans-serif;
+  margin: 0;
+  padding: 0;
+  font-family: 'Roboto', sans-serif; /* A clean and modern font */
+  background-color: #f0f2f5; /* A soft, neutral background color */
+  color: #333; /* Dark grey for better readability */
+  line-height: 1.6;
 }
 
+/* Chat Container */
 .chat-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  height: 100vh;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: white;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+  border-radius: 12px;
+  transition: box-shadow 0.3s ease;
 }
 
+.chat-container:hover {
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15); /* Subtle hover effect */
+}
+
+/* Form Styling */
 .input-box {
   display: flex;
-  align-items: center;
-  background-color: #333;
-  border-radius: 25px;
-  padding: 10px;
-  width: 400px;
+  justify-content: center;
+  margin: 30px 0;
 }
 
-.input-box input {
-  background: none;
-  border: none;
-  outline: none;
-  color: white;
-  width: 100%;
-  padding: 10px;
+.input-field {
+  flex-grow: 1;
+  padding: 14px;
   font-size: 18px;
+  border: 1px solid #ccc;
+  border-radius: 50px;
+  margin-right: 10px;
+  transition: border-color 0.3s ease;
+  outline: none;
+}
+
+.input-field:focus {
+  border-color: #007BFF; /* Blue outline on focus */
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
 }
 
 .send-btn {
-  background: none;
-  border: none;
+  background-color: #007BFF;
   color: white;
-  font-size: 24px;
+  border: none;
+  border-radius: 50px;
+  padding: 14px 20px;
+  font-size: 18px;
   cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.send-btn:hover {
+  background-color: #0056b3; /* Darker blue on hover */
+  transform: translateY(-2px);
+}
+
+/* Card Layout */
+.results-container {
+  margin-top: 20px;
+}
+
+.section-title {
+  font-size: 24px;
+  margin-bottom: 20px;
+  color: #007BFF;
+  text-align: center;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.card-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center;
+}
+
+.service-card, .exploit-card {
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  width: 280px;
+  text-align: center;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.service-card:hover, .exploit-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+}
+
+.service-name, .exploit-service {
+  font-size: 20px;
+  font-weight: bold;
+  color: #333;
+}
+
+.service-version, .exploit-list {
+  font-size: 16px;
+  color: #666;
+}
+
+.exploit-list {
+  list-style-type: none;
+  padding: 0;
+}
+
+.exploit-item {
+  margin-top: 8px;
+  padding: 8px;
+  background-color: #e7f5ff;
+  border-radius: 8px;
+  font-size: 14px;
+  color: #007BFF;
+}
+
+/* Body Styling Enhancements */
+body {
+  background: linear-gradient(135deg, #e8f0f7 25%, #f5f7fa 100%); /* Gradient background for modern look */
+  font-family: 'Poppins', sans-serif; /* Using Poppins for a more friendly, modern look */
+}
+
+.container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 40px 20px;
+}
+
+/* General Button Styles */
+button {
+  font-family: inherit;
+  font-size: 16px;
+  cursor: pointer;
+  padding: 12px 24px;
+  border-radius: 50px;
+  transition: background-color 0.3s, box-shadow 0.3s ease;
+}
+
+button:hover {
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
 }
