@@ -1,7 +1,10 @@
 import axios from "axios";
+// require("dotenv").config();
+
+axios.defaults.baseURL = "http://localhost:5000/";
 export const postData = async (url) => {
   try {
-    const response = await axios.post("http://localhost:5000/scan", {
+    const response = await axios.post("scan", {
       url: url,
     });
 
@@ -16,7 +19,7 @@ export const postData = async (url) => {
 
 export const postData2 = async (url) => {
   try {
-    const response = await axios.post("http://localhost:5000/scanv2", {
+    const response = await axios.post("scanv2", {
       url: url,
     });
 
