@@ -3,6 +3,7 @@ import "./App.css"; // For styling
 import { urlRegex } from "./utils/helper";
 import { postData, postData2 } from "./api/api";
 import WhatWeb from "./components/WhatWeb";
+import Vulners from "./components/Vulners";
 
 const App = () => {
   const [url, setUrl] = useState("");
@@ -51,6 +52,7 @@ const App = () => {
       </form>
 
       <WhatWeb res={res} />
+      <Vulners res={res1?.vulnerabilities?.data} />
     </div>
   );
 };
