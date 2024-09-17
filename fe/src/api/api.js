@@ -10,7 +10,7 @@ export const postData = async (url) => {
 
     console.log("Response:", response.data);
     if (response.data) {
-      return response.data;
+      return response?.data;
     }
   } catch (error) {
     console.error("Error:", error);
@@ -25,7 +25,7 @@ export const postData2 = async (url) => {
 
     console.log("Response:", response.data);
     if (response.data) {
-      return response.data;
+      return response?.data;
     }
   } catch (error) {
     console.error("Error:", error);
