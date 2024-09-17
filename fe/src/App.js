@@ -1,7 +1,7 @@
 import React from "react";
 import "./App.css"; // For styling
 
-const ChatInterface = () => {
+const App = () => {
   return (
     <div className="chat-container">
       <div className="input-box">
@@ -12,4 +12,4 @@ const ChatInterface = () => {
   );
 };
 
-export default ChatInterface;
+export default App;
