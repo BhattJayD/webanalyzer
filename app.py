@@ -34,9 +34,40 @@ def run_searchSploit(service):
         command = ['searchsploit', service]
         # Run the command and capture the output
         result = subprocess.run(command, capture_output=True, text=True, check=True)
-        if 'Exploits: No Results' in result.stdout:
-            return f"No exploits found for {service}"
-        return result.stdout
+        
+        # Remove ANSI escape codes
+        clean_output = re.sub(r'\x1b\[[0-9;]*m', '', result.stdout)
+
+        # Extract lines with exploit titles
+        # The exploit title lines are between 'Exploit Title' and 'Shellcodes: No Results'
+        lines = clean_output.split('\n')
+        start_index = 0
+        end_index = len(lines)
+
+        for i, line in enumerate(lines):
+            if 'Exploit Title' in line:
+                start_index = i + 1
+            if 'Shellcodes: No Results' in line:
+                end_index = i
+
+        # Extract titles and clean up
+        titles = []
+        for line in lines[start_index:end_index]:
+            # Filter out empty lines and trim whitespace
+            line = line.strip()
+            if line and '|' in line:
+                title = line.split('|')[0].strip()
+                if title:
+                    titles.append(title)
+
+        # Join the titles into a single string with newlines
+        formatted_output = '\n'.join(titles)
+        
+        if 'Exploits: No Results' in clean_output:
+            print (f"No exploits found for {service}")
+            return {"service":service,"vulns":[]}
+        
+        return {"service":service,"vulns":formatted_output.replace('\x1b','').replace('[K','').split('\n')}
     except subprocess.CalledProcessError as e:
         return f"An error occurred with searchsploit: {e}"
     except Exception as e:
@@ -68,7 +99,7 @@ def run_whatweb(url):
         
         exploits=[]
         for i in res:
-            if i:
+            if i and 'HTML' not in i:
                 exploits.append(run_searchSploit(i)) 
         return {"services": res, "exploits": exploits}        
     except subprocess.CalledProcessError as e:
