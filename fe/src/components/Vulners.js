@@ -1,5 +1,6 @@
 import React from "react";
 import "../styles/Vulners.css";
+import BarChart from "./BarChart";
 
 export default function Vulners({ res }) {
   console.log(res);
@@ -8,6 +9,7 @@ export default function Vulners({ res }) {
     <>
       <h2 className="section-title">Services With CVE</h2>
 
+      <BarChart data={res?.search} />
       <div className="json-container">
         {res?.search?.map((item, index) => (
           <div key={index} className="json-card">

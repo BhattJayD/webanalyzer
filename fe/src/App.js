@@ -51,8 +51,8 @@ const App = () => {
         </button>
       </form>
 
-      <WhatWeb res={res} />
-      <Vulners res={res1?.vulnerabilities?.data} />
+      {res != "" && <WhatWeb res={res} />}
+      {res1 != "" && <Vulners res={res1?.vulnerabilities?.data} />}
     </div>
   );
 };
