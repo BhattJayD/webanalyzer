@@ -27,10 +27,10 @@ export default function Vulners({ res }) {
                 <strong>Family: </strong>
                 {item._source.bulletinFamily}
               </p>
-              <p>
+              {/* <p>
                 <strong>Description: </strong>
                 {item._source.description}
-              </p>
+              </p> */}
               <p>
                 <strong>More Info: </strong>
                 <a href={item._source.href} target="_blank" rel="noreferrer">

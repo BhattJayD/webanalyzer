@@ -14,8 +14,10 @@
     border-radius: 12px;
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
     padding: 20px;
-    width: 300px;
+    width: 400px;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
+    max-height: 40vh;
+    overflow: scroll;
   }
   
   .json-card:hover {
@@ -64,6 +66,7 @@
     
     .json-card {
       width: 90%;
+      overflow: hidden;
     }
   }
   .input-field {
