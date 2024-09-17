@@ -20,7 +20,9 @@ const App = () => {
     const r1 = await postData(url);
     const r2 = await postData2(url);
     setRes(r1);
-    setRes1(r2);
+    if (r2?.vulnerabilities) {
+      setRes1(r2);
+    }
   };
 
   function splitString(input) {
